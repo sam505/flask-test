@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def main():
     count = 0
-    # link = request.args.get("link")
+    link = request.args.get("link")
     cap = cv2.VideoCapture('demo.mp4')
     while cap.isOpened():
         count += 1
@@ -16,13 +16,13 @@ def main():
             break
 
         frame = cv2.flip(frame, 1)
-        cv2.imshow('Capture', frame)
-        cv2.waitKey(1)
+        # cv2.imshow('Capture', frame)
+        # cv2.waitKey(1)
 
     cap.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
 
-    return jsonify(status=_, frames='{} frames'.format(count))
+    return jsonify(status=_, frames='{} frames'.format(count), message='Video finished streaming without errors')
 
 
 if __name__ == '__main__':

@@ -1,5 +1,8 @@
 import cv2
 from flask import Flask, render_template, request, jsonify
+import jwt
+import requests
+
 
 app = Flask(__name__)
 
@@ -7,22 +10,28 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def main():
     count = 0
-    link = request.args.get("link")
-    cap = cv2.VideoCapture('demo.mp4')
-    while cap.isOpened():
-        count += 1
-        _, frame = cap.read()
-        if not _:
-            break
+    data = request.get_json()
+    video = data["video_link"]
+    try:
+        cap = cv2.VideoCapture(video)
+        while cap.isOpened():
+            count += 1
+            _, frame = cap.read()
+            if not _:
+                break
 
-        frame = cv2.flip(frame, 1)
-        # cv2.imshow('Capture', frame)
-        # cv2.waitKey(1)
+            frame = cv2.flip(frame, 1)
+        message = 'Video finished streaming without errors'
 
-    cap.release()
-    # cv2.destroyAllWindows()
+        cap.release()
+    except:
+        message = 'There was an error capturing the video'
 
-    return jsonify(status=_, frames='{} frames'.format(count), message='Video finished streaming without errors')
+    return jsonify(student_id=data['student_id'],
+                   exam_id=data['exam_id'],
+                   results='{}%'.format(90),
+                   frames='{} frames'.format(count),
+                   message=message)
 
 
 if __name__ == '__main__':
